@@ -1,0 +1,109 @@
+package ihm;
+
+import gestion.Banque;
+import gestion.Compte;
+import gestion.Operation;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.*;
+
+public class DetailCli extends Formulaire implements ActionListener {
+	private Compte cptActuel;
+	private Champ chNumCpt;
+	private Champ chTypeCpt;
+	private Champ chNomCli;
+	private Champ chDecMax;
+	private Champ chSolde;
+	private JList listeOp;
+	private DefaultListModel listModel;
+	private JTextField tfSomme;
+	private JButton btnCrediter;
+	private JButton btnDebiter;
+	private JLabel lblFact;
+	private JButton btnFacturerDecou;
+
+	public DetailCli(Banque laBanque, int numCpt) {
+		cptActuel = laBanque.getCompte(numCpt);
+
+		setSize(700, 500);
+		setTitle("Détail du compte " + numCpt);
+
+		JPanel panGestion = new JPanel(new GridLayout(10, 1));
+		chNumCpt = new Champ(this, "Numéro de compte", numCpt, true);
+		panGestion.add(chNumCpt);
+
+		chTypeCpt = new Champ(this, "Type de compte", cptActuel.getTypeCpt(), true);
+		panGestion.add(chTypeCpt);
+
+		chSolde = new Champ(this, "Solde ", cptActuel.getSolde() + "€", true);
+		panGestion.add(chSolde);
+
+		chNomCli = new Champ(this, "Propriétaire", cptActuel.getProprio(),
+				false);
+		panGestion.add(chNomCli);
+
+		//Certains comptes ne doivent pas avoir la possibilité de changer leur découvert max
+		String typeActuel = cptActuel.getTypeCpt();
+		if (typeActuel != "Adolescent" && typeActuel != "Associatif") {
+			chDecMax = new Champ(this, "Découvert maximum (en €)",
+					cptActuel.getDecouvertMax(), false);
+			panGestion.add(chDecMax);
+		}
+
+		JPanel panCredDeb = new JPanel(new GridLayout(1, 3, 10, 0));
+		btnDebiter = new JButton("Débiter");
+		panCredDeb.add(btnDebiter);
+		tfSomme = new JTextField();
+		panCredDeb.add(tfSomme);
+		btnCrediter = new JButton("Créditer");
+		panCredDeb.add(btnCrediter);
+
+		panGestion.add(panCredDeb);
+
+		JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 10, 0));
+		panFactDecou.add(new JLabel("À facturer "));
+		lblFact = new JLabel(cptActuel.getFactureVirtuelle() + "€");
+		panFactDecou.add(lblFact);
+		btnFacturerDecou = new JButton("Facturer");
+		panFactDecou.add(btnFacturerDecou);
+
+		panGestion.add(panFactDecou);
+
+		add(panGestion);
+
+		listModel = new DefaultListModel();
+		listeOp = new JList();
+		listeOp.setModel(listModel);
+		majListe();
+
+		JPanel panOp = new JPanel(new GridLayout(2, 1));
+		panOp.add(new JLabel("Liste des opérations :"));
+		panOp.add(listeOp);
+		add(panOp, BorderLayout.SOUTH);
+
+		setVisible(true);
+	}
+
+	private void majListe() {
+		listModel.removeAllElements();
+		ArrayList<Operation> alOp = cptActuel.getJournal();
+		for (Operation op : alOp)
+			listModel.addElement(op);
+	}
+
+	public void maj() {
+		cptActuel.setProprio(chNomCli.getTf());
+		cptActuel.setDecouvertMax(Float.parseFloat(chDecMax.getTf()));
+		majListe();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent ae) {
+		// Object objSource = ae.getSource();
+	}
+}
