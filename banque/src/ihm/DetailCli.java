@@ -28,6 +28,7 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private JLabel lblFact;
 	private JButton btnFacturerDecou;
 	private ChampConsult chSolde;
+	private boolean decouvertAutorise;
 
 	public DetailCli(Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
@@ -50,8 +51,7 @@ public class DetailCli extends Formulaire implements ActionListener {
 
 		// Certains comptes ne doivent pas avoir la possibilité de changer leur
 		// découvert max
-		String typeActuel = cptActuel.getTypeCpt();
-		if (typeActuel != "Adolescent" && typeActuel != "Associatif") {
+		if (decouvertAutorise = (cptActuel.getTypeCpt() != "Adolescent" && cptActuel.getTypeCpt() != "Associatif")) {
 			chDecMax = new ChampBouton(this, "Découvert maximum (en €)",
 					cptActuel.getDecouvertMax());
 			panGestion.add(chDecMax);
@@ -106,7 +106,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 
 	public void maj() {
 		cptActuel.setProprio(chNomCli.getTf());
-		cptActuel.setDecouvertMax(Float.parseFloat(chDecMax.getTf()));
+		if(decouvertAutorise)
+			cptActuel.setDecouvertMax(Float.parseFloat(chDecMax.getTf()));
 		majListe();
 	}
 
