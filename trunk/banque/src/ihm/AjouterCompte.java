@@ -21,6 +21,8 @@ import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import utilitaire.VerifFormat;
+
 public class AjouterCompte extends JFrame implements ActionListener, ChangeListener {
 	private Banque laBanque;
 	private JRadioButton radPhysique;
@@ -88,7 +90,7 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 	public void actionPerformed(ActionEvent ae) {
 		Compte cptTemp = null;
 
-		if (estChiffre(chSolde.getTf())) {
+		if (VerifFormat.estChiffre(chSolde.getTf())) {
 			if (radPhysique.isSelected()) {
 				cptTemp = new PersonnePhysique(chProprio.getTf(),
 						Float.parseFloat(chSolde.getTf()),
@@ -113,16 +115,6 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 		{
 			JOptionPane.showMessageDialog(this, "Vous devez saisir un solde correct.",
 					"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-
-	//méthode utilitaire -> class spéciale
-	public boolean estChiffre(String s) {
-		try {
-			Float.parseFloat(s);
-			return true;
-		} catch (NumberFormatException nfe) {
-			return false;
 		}
 	}
 

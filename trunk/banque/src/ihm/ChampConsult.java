@@ -8,6 +8,11 @@ import javax.swing.JPanel;
 public class ChampConsult extends JPanel {
 	private JLabel lblLegende;
 	private JLabel lblTexte;
+	
+
+	public ChampConsult(String legende, float valeur) {
+		this(legende, "" + valeur);
+	}
 
 	public ChampConsult(String legende, int valeur) {
 		this(legende, "" + valeur);
