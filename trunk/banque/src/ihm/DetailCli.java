@@ -99,6 +99,10 @@ public class DetailCli extends Formulaire implements ActionListener {
 		for (Operation op : alOp)
 			listModel.addElement(op);
 	}
+	
+	private void majSolde() {
+		chSolde.setLblTexte(cptActuel.getSolde() + "€");
+	}
 
 	public void maj() {
 		cptActuel.setProprio(chNomCli.getTf());
@@ -118,11 +122,18 @@ public class DetailCli extends Formulaire implements ActionListener {
 					cptActuel.crediter(somme);
 				else
 					cptActuel.debiter(somme);
+				
+				majSolde();
 			}
 			else
 				JOptionPane.showMessageDialog(this,
 						"Vous devez saisir une somme correcte.",
 						"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
 		}
+		
+		if(objSource == btnFacturerDecou) {
+			cptActuel.facturer();
+		}
+		majListe();
 	}
 }
