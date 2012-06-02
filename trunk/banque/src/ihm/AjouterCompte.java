@@ -14,13 +14,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class AjouterCompte extends Formulaire implements ActionListener, ChangeListener {
+public class AjouterCompte extends JFrame implements ActionListener, ChangeListener {
 	private Banque laBanque;
 	private JRadioButton radPhysique;
 	private JRadioButton radMoral;
@@ -35,7 +36,8 @@ public class AjouterCompte extends Formulaire implements ActionListener, ChangeL
 	private ListeCpt parent;
 
 	public AjouterCompte(ListeCpt parent, Banque laBanque) {
-		setSize(700, 500);
+		setSize(700, 300);
+		setTitle("Ajouter un compte");
 
 		this.laBanque = laBanque;
 		this.parent = parent;
@@ -65,8 +67,8 @@ public class AjouterCompte extends Formulaire implements ActionListener, ChangeL
 
 		JPanel panInfos = new JPanel(new GridLayout(10, 1));
 		chProprio = new ChampModif("Nom du propriétaire");
-		chSolde = new ChampModif("Solde");
-		chDecouvertMax = new ChampModif("Découvert maximum");
+		chSolde = new ChampModif("Solde (en €)");
+		chDecouvertMax = new ChampModif("Découvert maximum (en €)");
 		panInfos.add(chProprio);
 		panInfos.add(chSolde);
 		panInfos.add(chDecouvertMax);
@@ -114,12 +116,7 @@ public class AjouterCompte extends Formulaire implements ActionListener, ChangeL
 		}
 	}
 
-	@Override
-	public void maj() {
-		// TODO Auto-generated method stub
-
-	}
-
+	//méthode utilitaire -> class spéciale
 	public boolean estChiffre(String s) {
 		try {
 			Float.parseFloat(s);

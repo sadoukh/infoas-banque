@@ -40,11 +40,11 @@ public class DetailCli extends Formulaire implements ActionListener {
 		chTypeCpt = new ChampConsult("Type de compte", cptActuel.getTypeCpt());
 		panGestion.add(chTypeCpt);
 
-		chSolde = new ChampBouton(this, "Solde", cptActuel.getSolde() + "€");
-		panGestion.add(chSolde);
-
 		chNomCli = new ChampBouton(this, "Propriétaire", cptActuel.getProprio());
 		panGestion.add(chNomCli);
+
+		chSolde = new ChampBouton(this, "Solde (en €)", cptActuel.getSolde());
+		panGestion.add(chSolde);
 
 		//Certains comptes ne doivent pas avoir la possibilité de changer leur découvert max
 		String typeActuel = cptActuel.getTypeCpt();

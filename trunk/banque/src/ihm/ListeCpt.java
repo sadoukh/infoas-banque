@@ -82,12 +82,14 @@ public class ListeCpt extends JFrame implements ActionListener {
 			listModel.addElement(k + " - " + cptCourant.getProprio());
 		}
 	}
-	
+
 	public JCheckBox getChbDecouvert() {
 		return chbDecouvert;
 	}
 
 	public static void main(String[] args) {
+
+		// Idéalement des informations seraient sérialisées
 		maBanque = new Banque("BNP");
 		maBanque.ajouterCompte(new PersonneMorale("compte de test", 12));
 		PersonneMorale pm2 = new PersonneMorale("compte de test 2", 12);
