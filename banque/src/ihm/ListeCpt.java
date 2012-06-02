@@ -25,12 +25,13 @@ public class ListeCpt extends JFrame implements ActionListener {
 		setTitle("Comptes client de la banque " + uneBanque.getNom());
 		setLocation(50, 50);
 		setSize(400, 400);
+		setDefaultCloseOperation(ListeCpt.EXIT_ON_CLOSE);
 
 		listModel = new DefaultListModel();
 		listCli = new JList();
 		listCli.setModel(listModel);
 
-		creerListe(false);
+		majListe(false);
 
 		btnAjouter = new JButton("Ajouter un compte");
 		btnAjouter.addActionListener(this);
@@ -63,14 +64,15 @@ public class ListeCpt extends JFrame implements ActionListener {
 						"Erreur", JOptionPane.ERROR_MESSAGE);
 		} else if (objSource == chbDecouvert) {
 			listModel.removeAllElements();
-			creerListe(chbDecouvert.isSelected());
+			majListe(chbDecouvert.isSelected());
 			listCli.setModel(listModel);
 		} else if (objSource == btnAjouter) {
-			new AjouterCompte();
+			new AjouterCompte(this, maBanque);
 		}
 	}
 
-	public void creerListe(boolean aDecouvert) {
+	public void majListe(boolean aDecouvert) {
+		listModel.clear();
 		HashMap<Integer, Compte> listeCpt = aDecouvert ? maBanque
 				.listeDecouverts() : maBanque.getListeCompte();
 		Set<Integer> ks = listeCpt.keySet();
@@ -78,6 +80,10 @@ public class ListeCpt extends JFrame implements ActionListener {
 			Compte cptCourant = listeCpt.get(k);
 			listModel.addElement(k + " - " + cptCourant.getProprio());
 		}
+	}
+	
+	public JCheckBox getChbDecouvert() {
+		return chbDecouvert;
 	}
 
 	public static void main(String[] args) {
