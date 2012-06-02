@@ -36,7 +36,7 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 	private ListeCpt parent;
 
 	public AjouterCompte(ListeCpt parent, Banque laBanque) {
-		setSize(700, 300);
+		setSize(700, 400);
 		setTitle("Ajouter un compte");
 
 		this.laBanque = laBanque;
@@ -65,7 +65,7 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 
 		add(panChoixCpt, BorderLayout.NORTH);
 
-		JPanel panInfos = new JPanel(new GridLayout(10, 1));
+		JPanel panInfos = new JPanel(new GridLayout(10, 1, 0, 10));
 		chProprio = new ChampModif("Nom du propriétaire");
 		chSolde = new ChampModif("Solde (en €)");
 		chDecouvertMax = new ChampModif("Découvert maximum (en €)");
