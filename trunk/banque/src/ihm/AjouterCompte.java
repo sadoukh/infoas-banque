@@ -14,30 +14,35 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 
 public class AjouterCompte extends Formulaire implements ActionListener {
 	private Banque laBanque;
-	private JCheckBox chbPhysique;
-	private JCheckBox chbMoral;
-	private JCheckBox chbAdo;
-	private JCheckBox chbAsso;
+	private JRadioButton chbPhysique;
+	private JRadioButton chbMoral;
+	private JRadioButton chbAdo;
+	private JRadioButton chbAsso;
 	private JPanel panChoixCpt;
 	private Champ chProprio;
 	private Champ chSolde;
 	private Champ chDecouvertMax;
 	private JButton btnAjouter;
 	private ButtonGroup cbg;
+	private ListeCpt parent;
 
-	public AjouterCompte() {
+	public AjouterCompte(ListeCpt parent, Banque laBanque) {
 		setSize(700, 500);
 
-		chbPhysique = new JCheckBox("Personne physique", false);
+		this.laBanque = laBanque;
+		this.parent = parent;
+
+		chbPhysique = new JRadioButton("Personne physique", false);
 		chbPhysique.setSelected(true);
-		chbMoral = new JCheckBox("Personne morale", false);
-		chbAdo = new JCheckBox("Adolescent", false);
-		chbAsso = new JCheckBox("Associatif", false);
+		chbMoral = new JRadioButton("Personne morale", false);
+		chbAdo = new JRadioButton("Adolescent", false);
+		chbAsso = new JRadioButton("Associatif", false);
 
 		panChoixCpt = new JPanel(new GridLayout(1, 4));
 		panChoixCpt.add(chbPhysique);
@@ -66,36 +71,49 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 		btnAjouter = new JButton("Créer le compte");
 		btnAjouter.addActionListener(this);
 		add(btnAjouter, BorderLayout.SOUTH);
-		
+
 		setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		Compte cptTemp = null;
-		JCheckBox chbTemp = (JCheckBox) cbg.getSelection();
 
-		if (chbTemp == chbPhysique) {
-			cptTemp = new PersonnePhysique(chProprio.getTf(),
-					Float.parseFloat(chSolde.getTf()),
-					Float.parseFloat(chDecouvertMax.getTf()));
-		} else if (chbTemp == chbMoral) {
-			cptTemp = new PersonneMorale(chProprio.getTf(),
-					Float.parseFloat(chSolde.getTf()),
-					Float.parseFloat(chDecouvertMax.getTf()));
-		} else if (chbTemp == chbAdo) {
-			cptTemp = new Ado(chProprio.getTf(),
-					Float.parseFloat(chSolde.getTf()));
-		} else if (chbTemp == chbAsso) {
-			cptTemp = new Association(chProprio.getTf(),
-					Float.parseFloat(chSolde.getTf()));
+		if (estChiffre(chSolde.getTf())) {
+			if (chbPhysique.isSelected()) {
+				cptTemp = new PersonnePhysique(chProprio.getTf(),
+						Float.parseFloat(chSolde.getTf()),
+						Float.parseFloat(chDecouvertMax.getTf()));
+			} else if (chbMoral.isSelected()) {
+				cptTemp = new PersonneMorale(chProprio.getTf(),
+						Float.parseFloat(chSolde.getTf()),
+						Float.parseFloat(chDecouvertMax.getTf()));
+			} else if (chbAdo.isSelected()) {
+				cptTemp = new Ado(chProprio.getTf(), Float.parseFloat(chSolde
+						.getTf()));
+			} else if (chbAsso.isSelected()) {
+				cptTemp = new Association(chProprio.getTf(),
+						Float.parseFloat(chSolde.getTf()));
+			}
+			laBanque.ajouterCompte(cptTemp);
+			JOptionPane.showMessageDialog(this, "Le compte a bien été ajouté",
+					"Nouveau compte", JOptionPane.PLAIN_MESSAGE);
+			parent.majListe(parent.getChbDecouvert().isSelected());
 		}
-		laBanque.ajouterCompte(cptTemp);
 	}
 
 	@Override
 	public void maj() {
 		// TODO Auto-generated method stub
 
+	}
+
+	public boolean estChiffre(String s) {
+		try {
+			Float.parseFloat(s);
+			return true;
+		} catch (NumberFormatException nfe) {
+			return false;
+		}
 	}
 }
