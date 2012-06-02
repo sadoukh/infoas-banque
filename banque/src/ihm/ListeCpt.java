@@ -32,9 +32,6 @@ public class ListeCpt extends JFrame implements ActionListener {
 		listCli.setModel(listModel);
 		JScrollPane scrollPane = new JScrollPane(listCli);
 
-		String[] columnNames = { "Numéro de compte", "Type de compte", "Propriétaire" };
-		
-		
 		majListe(false);
 
 		btnAjouter = new JButton("Ajouter un compte");
