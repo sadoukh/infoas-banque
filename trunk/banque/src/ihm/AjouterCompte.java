@@ -17,17 +17,19 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class AjouterCompte extends Formulaire implements ActionListener {
+public class AjouterCompte extends Formulaire implements ActionListener, ChangeListener {
 	private Banque laBanque;
-	private JRadioButton chbPhysique;
-	private JRadioButton chbMoral;
-	private JRadioButton chbAdo;
-	private JRadioButton chbAsso;
+	private JRadioButton radPhysique;
+	private JRadioButton radMoral;
+	private JRadioButton radAdo;
+	private JRadioButton radAsso;
 	private JPanel panChoixCpt;
-	private Champ chProprio;
-	private Champ chSolde;
-	private Champ chDecouvertMax;
+	private ChampModif chProprio;
+	private ChampModif chSolde;
+	private ChampModif chDecouvertMax;
 	private JButton btnAjouter;
 	private ButtonGroup cbg;
 	private ListeCpt parent;
@@ -38,30 +40,33 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 		this.laBanque = laBanque;
 		this.parent = parent;
 
-		chbPhysique = new JRadioButton("Personne physique", false);
-		chbPhysique.setSelected(true);
-		chbMoral = new JRadioButton("Personne morale", false);
-		chbAdo = new JRadioButton("Adolescent", false);
-		chbAsso = new JRadioButton("Associatif", false);
-
+		radPhysique = new JRadioButton("Personne physique", false);
+		radPhysique.addChangeListener(this);
+		radMoral = new JRadioButton("Personne morale", false);
+		radMoral.addChangeListener(this);
+		radAdo = new JRadioButton("Adolescent", false);
+		radAdo.addChangeListener(this);
+		radAsso = new JRadioButton("Associatif", false);
+		radAsso.addChangeListener(this);
+		
 		panChoixCpt = new JPanel(new GridLayout(1, 4));
-		panChoixCpt.add(chbPhysique);
-		panChoixCpt.add(chbMoral);
-		panChoixCpt.add(chbAdo);
-		panChoixCpt.add(chbAsso);
+		panChoixCpt.add(radPhysique);
+		panChoixCpt.add(radMoral);
+		panChoixCpt.add(radAdo);
+		panChoixCpt.add(radAsso);
 
 		cbg = new ButtonGroup();
-		cbg.add(chbPhysique);
-		cbg.add(chbMoral);
-		cbg.add(chbAdo);
-		cbg.add(chbAsso);
+		cbg.add(radPhysique);
+		cbg.add(radMoral);
+		cbg.add(radAdo);
+		cbg.add(radAsso);
 
 		add(panChoixCpt, BorderLayout.NORTH);
 
 		JPanel panInfos = new JPanel(new GridLayout(10, 1));
-		chProprio = new Champ(this, "Nom du propriétaire", false);
-		chSolde = new Champ(this, "Solde", false);
-		chDecouvertMax = new Champ(this, "Découvert maximum", false);
+		chProprio = new ChampModif("Nom du propriétaire");
+		chSolde = new ChampModif("Solde");
+		chDecouvertMax = new ChampModif("Découvert maximum");
 		panInfos.add(chProprio);
 		panInfos.add(chSolde);
 		panInfos.add(chDecouvertMax);
@@ -72,6 +77,8 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 		btnAjouter.addActionListener(this);
 		add(btnAjouter, BorderLayout.SOUTH);
 
+		radPhysique.setSelected(true);
+
 		setVisible(true);
 	}
 
@@ -80,18 +87,18 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 		Compte cptTemp = null;
 
 		if (estChiffre(chSolde.getTf())) {
-			if (chbPhysique.isSelected()) {
+			if (radPhysique.isSelected()) {
 				cptTemp = new PersonnePhysique(chProprio.getTf(),
 						Float.parseFloat(chSolde.getTf()),
 						Float.parseFloat(chDecouvertMax.getTf()));
-			} else if (chbMoral.isSelected()) {
+			} else if (radMoral.isSelected()) {
 				cptTemp = new PersonneMorale(chProprio.getTf(),
 						Float.parseFloat(chSolde.getTf()),
 						Float.parseFloat(chDecouvertMax.getTf()));
-			} else if (chbAdo.isSelected()) {
+			} else if (radAdo.isSelected()) {
 				cptTemp = new Ado(chProprio.getTf(), Float.parseFloat(chSolde
 						.getTf()));
-			} else if (chbAsso.isSelected()) {
+			} else if (radAsso.isSelected()) {
 				cptTemp = new Association(chProprio.getTf(),
 						Float.parseFloat(chSolde.getTf()));
 			}
@@ -99,6 +106,11 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 			JOptionPane.showMessageDialog(this, "Le compte a bien été ajouté",
 					"Nouveau compte", JOptionPane.PLAIN_MESSAGE);
 			parent.majListe(parent.getChbDecouvert().isSelected());
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(this, "Vous devez saisir un solde correct.",
+					"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -115,5 +127,10 @@ public class AjouterCompte extends Formulaire implements ActionListener {
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		chDecouvertMax.setVisible(!(radAdo.isSelected() || radAsso.isSelected()));
 	}
 }
