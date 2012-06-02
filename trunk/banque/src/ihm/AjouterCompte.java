@@ -110,6 +110,7 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 			JOptionPane.showMessageDialog(this, "Le compte a bien été ajouté",
 					"Nouveau compte", JOptionPane.PLAIN_MESSAGE);
 			parent.majListe(parent.getChbDecouvert().isSelected());
+			dispose();
 		}
 		else
 		{

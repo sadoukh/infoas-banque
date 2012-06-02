@@ -2,7 +2,6 @@ package ihm;
 
 import gestion.Banque;
 import gestion.Compte;
-import gestion.PersonneMorale;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -89,12 +88,7 @@ public class ListeCpt extends JFrame implements ActionListener {
 
 	public static void main(String[] args) {
 
-		// Idéalement des informations seraient sérialisées
 		maBanque = new Banque("BNP");
-		maBanque.ajouterCompte(new PersonneMorale("compte de test", 12));
-		PersonneMorale pm2 = new PersonneMorale("compte de test 2", 12);
-		maBanque.ajouterCompte(pm2);
-		pm2.debiter(10);
 		new ListeCpt(maBanque);
 	}
 }
