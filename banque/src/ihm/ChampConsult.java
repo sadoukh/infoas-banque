@@ -29,4 +29,8 @@ public class ChampConsult extends JPanel {
 
 		setVisible(true);
 	}
+	
+	public void setLblTexte(String lblTexte) {
+		this.lblTexte.setText(lblTexte);
+	}
 }
