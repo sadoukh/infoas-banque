@@ -59,7 +59,7 @@ public abstract class Compte implements Nommable {
 		return ok;
 	}
 
-	protected boolean debiter(float somme) {
+	public boolean debiter(float somme) {
 		assert somme > 0;
 
 		boolean ok = solde - somme >= -decouvertMax;

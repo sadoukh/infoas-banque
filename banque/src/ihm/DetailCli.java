@@ -12,13 +12,14 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import utilitaire.VerifFormat;
+
 public class DetailCli extends Formulaire implements ActionListener {
 	private Compte cptActuel;
 	private ChampConsult chNumCpt;
 	private ChampConsult chTypeCpt;
 	private ChampBouton chNomCli;
 	private ChampBouton chDecMax;
-	private ChampBouton chSolde;
 	private JList listeOp;
 	private DefaultListModel listModel;
 	private JTextField tfSomme;
@@ -26,16 +27,20 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private JButton btnDebiter;
 	private JLabel lblFact;
 	private JButton btnFacturerDecou;
+	private ChampConsult chSolde;
 
 	public DetailCli(Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
 
 		setSize(700, 500);
-		setTitle("Détail du compte " + numCpt);
+		setTitle("Détail du compte n°" + numCpt);
 
 		JPanel panGestion = new JPanel(new GridLayout(10, 1, 0, 10));
 		chNumCpt = new ChampConsult("Numéro de compte", numCpt);
 		panGestion.add(chNumCpt);
+
+		chSolde = new ChampConsult("Solde", cptActuel.getSolde() + "€");
+		panGestion.add(chSolde);
 
 		chTypeCpt = new ChampConsult("Type de compte", cptActuel.getTypeCpt());
 		panGestion.add(chTypeCpt);
@@ -43,10 +48,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 		chNomCli = new ChampBouton(this, "Propriétaire", cptActuel.getProprio());
 		panGestion.add(chNomCli);
 
-		chSolde = new ChampBouton(this, "Solde (en €)", cptActuel.getSolde());
-		panGestion.add(chSolde);
-
-		//Certains comptes ne doivent pas avoir la possibilité de changer leur découvert max
+		// Certains comptes ne doivent pas avoir la possibilité de changer leur
+		// découvert max
 		String typeActuel = cptActuel.getTypeCpt();
 		if (typeActuel != "Adolescent" && typeActuel != "Associatif") {
 			chDecMax = new ChampBouton(this, "Découvert maximum (en €)",
@@ -54,24 +57,28 @@ public class DetailCli extends Formulaire implements ActionListener {
 			panGestion.add(chDecMax);
 		}
 
-		JPanel panCredDeb = new JPanel(new GridLayout(1, 3, 10, 0));
-		btnDebiter = new JButton("Débiter");
-		panCredDeb.add(btnDebiter);
-		tfSomme = new JTextField();
-		panCredDeb.add(tfSomme);
-		btnCrediter = new JButton("Créditer");
-		panCredDeb.add(btnCrediter);
-
-		panGestion.add(panCredDeb);
-
 		JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 10, 0));
-		panFactDecou.add(new JLabel("À facturer "));
+		panFactDecou.add(new JLabel("À facturer"));
 		lblFact = new JLabel(cptActuel.getFactureVirtuelle() + "€");
 		panFactDecou.add(lblFact);
 		btnFacturerDecou = new JButton("Facturer");
+		btnFacturerDecou.addActionListener(this);
 		panFactDecou.add(btnFacturerDecou);
 
 		panGestion.add(panFactDecou);
+
+		JPanel panCredDeb = new JPanel(new GridLayout(1, 4, 10, 0));
+		panCredDeb.add(new JLabel("Somme (en €)"));
+		tfSomme = new JTextField();
+		panCredDeb.add(tfSomme);
+		btnDebiter = new JButton("Débiter");
+		btnDebiter.addActionListener(this);
+		panCredDeb.add(btnDebiter);
+		btnCrediter = new JButton("Créditer");
+		btnCrediter.addActionListener(this);
+		panCredDeb.add(btnCrediter);
+
+		panGestion.add(panCredDeb);
 
 		add(panGestion);
 
@@ -101,6 +108,21 @@ public class DetailCli extends Formulaire implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		// Object objSource = ae.getSource();
+		Object objSource = ae.getSource();
+
+		if (objSource == btnCrediter || objSource == btnDebiter) {
+			if (VerifFormat.estChiffre(tfSomme.getText())) {
+				float somme = Float.parseFloat(tfSomme.getText());
+				
+				if(objSource == btnCrediter)
+					cptActuel.crediter(somme);
+				else
+					cptActuel.debiter(somme);
+			}
+			else
+				JOptionPane.showMessageDialog(this,
+						"Vous devez saisir une somme correcte.",
+						"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }
