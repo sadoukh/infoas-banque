@@ -33,7 +33,7 @@ public class DetailCli extends Formulaire implements ActionListener {
 		setSize(700, 500);
 		setTitle("Détail du compte " + numCpt);
 
-		JPanel panGestion = new JPanel(new GridLayout(10, 1));
+		JPanel panGestion = new JPanel(new GridLayout(10, 1, 0, 10));
 		chNumCpt = new ChampConsult("Numéro de compte", numCpt);
 		panGestion.add(chNumCpt);
 
