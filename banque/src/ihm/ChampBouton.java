@@ -10,6 +10,10 @@ public class ChampBouton extends ChampModif implements ActionListener {
 	private Formulaire frm;
 	private JButton btn;
 	
+	public ChampBouton(Formulaire frm, String texteLbl, float valeurTf) {
+		this(frm, texteLbl, "" + valeurTf, "Modifier");
+	}
+	
 	public ChampBouton(Formulaire frm, String texteLbl, String texteTf) {
 		this(frm, texteLbl, texteTf, "Modifier");
 	}

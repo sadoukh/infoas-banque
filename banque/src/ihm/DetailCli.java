@@ -17,7 +17,7 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private ChampConsult chNumCpt;
 	private ChampConsult chTypeCpt;
 	private ChampBouton chNomCli;
-	private Champ chDecMax;
+	private ChampBouton chDecMax;
 	private ChampBouton chSolde;
 	private JList listeOp;
 	private DefaultListModel listModel;
@@ -49,8 +49,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 		//Certains comptes ne doivent pas avoir la possibilité de changer leur découvert max
 		String typeActuel = cptActuel.getTypeCpt();
 		if (typeActuel != "Adolescent" && typeActuel != "Associatif") {
-			chDecMax = new Champ(this, "Découvert maximum (en €)",
-					cptActuel.getDecouvertMax(), false);
+			chDecMax = new ChampBouton(this, "Découvert maximum (en €)",
+					cptActuel.getDecouvertMax());
 			panGestion.add(chDecMax);
 		}
 
@@ -77,13 +77,11 @@ public class DetailCli extends Formulaire implements ActionListener {
 
 		listModel = new DefaultListModel();
 		listeOp = new JList();
+		JScrollPane scrollPane = new JScrollPane(listeOp);
 		listeOp.setModel(listModel);
 		majListe();
 
-		JPanel panOp = new JPanel(new GridLayout(2, 1));
-		panOp.add(new JLabel("Liste des opérations :"));
-		panOp.add(listeOp);
-		add(panOp, BorderLayout.SOUTH);
+		add(scrollPane, BorderLayout.SOUTH);
 
 		setVisible(true);
 	}

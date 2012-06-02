@@ -73,7 +73,7 @@ public class ListeCpt extends JFrame implements ActionListener {
 	}
 
 	public void majListe(boolean aDecouvert) {
-		listModel.clear();
+		listModel.removeAllElements();
 		HashMap<Integer, Compte> listeCpt = aDecouvert ? maBanque
 				.listeDecouverts() : maBanque.getListeCompte();
 		Set<Integer> ks = listeCpt.keySet();
