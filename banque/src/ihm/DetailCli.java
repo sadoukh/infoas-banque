@@ -14,11 +14,11 @@ import javax.swing.*;
 
 public class DetailCli extends Formulaire implements ActionListener {
 	private Compte cptActuel;
-	private Champ chNumCpt;
-	private Champ chTypeCpt;
-	private Champ chNomCli;
+	private ChampConsult chNumCpt;
+	private ChampConsult chTypeCpt;
+	private ChampBouton chNomCli;
 	private Champ chDecMax;
-	private Champ chSolde;
+	private ChampBouton chSolde;
 	private JList listeOp;
 	private DefaultListModel listModel;
 	private JTextField tfSomme;
@@ -34,17 +34,16 @@ public class DetailCli extends Formulaire implements ActionListener {
 		setTitle("Détail du compte " + numCpt);
 
 		JPanel panGestion = new JPanel(new GridLayout(10, 1));
-		chNumCpt = new Champ(this, "Numéro de compte", numCpt, true);
+		chNumCpt = new ChampConsult("Numéro de compte", numCpt);
 		panGestion.add(chNumCpt);
 
-		chTypeCpt = new Champ(this, "Type de compte", cptActuel.getTypeCpt(), true);
+		chTypeCpt = new ChampConsult("Type de compte", cptActuel.getTypeCpt());
 		panGestion.add(chTypeCpt);
 
-		chSolde = new Champ(this, "Solde ", cptActuel.getSolde() + "€", true);
+		chSolde = new ChampBouton(this, "Solde", cptActuel.getSolde() + "€");
 		panGestion.add(chSolde);
 
-		chNomCli = new Champ(this, "Propriétaire", cptActuel.getProprio(),
-				false);
+		chNomCli = new ChampBouton(this, "Propriétaire", cptActuel.getProprio());
 		panGestion.add(chNomCli);
 
 		//Certains comptes ne doivent pas avoir la possibilité de changer leur découvert max

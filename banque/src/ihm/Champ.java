@@ -59,6 +59,14 @@ public class Champ extends JPanel implements ActionListener {
 	public void setTf(String texte) {
 		tfTexte.setText(texte);
 	}
+	
+	public void desactiver() {
+		this.tfTexte.setVisible(false);
+	}
+	
+	public void activer() {
+		this.tfTexte.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {

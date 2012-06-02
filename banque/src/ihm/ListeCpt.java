@@ -30,13 +30,14 @@ public class ListeCpt extends JFrame implements ActionListener {
 		listModel = new DefaultListModel();
 		listCli = new JList();
 		listCli.setModel(listModel);
+		JScrollPane scrollPane = new JScrollPane(listCli);
 
 		majListe(false);
 
 		btnAjouter = new JButton("Ajouter un compte");
 		btnAjouter.addActionListener(this);
 		add(btnAjouter, BorderLayout.NORTH);
-		add(listCli);
+		add(scrollPane);
 
 		JPanel pGrid = new JPanel(new GridLayout(2, 1));
 		chbDecouvert = new JCheckBox(
