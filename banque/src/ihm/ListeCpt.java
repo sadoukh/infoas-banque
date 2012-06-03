@@ -56,7 +56,7 @@ public class ListeCpt extends JFrame implements ActionListener {
 		Object objSource = ae.getSource();
 		if (objSource == btnOK) {
 			if (listCli.getSelectedIndex() != -1)
-				new DetailCli(maBanque, Integer.parseInt(listCli
+				new DetailCli(this, maBanque, Integer.parseInt(listCli
 						.getSelectedValue().toString().split(" - ")[0]));
 			else
 				JOptionPane.showMessageDialog(this,
