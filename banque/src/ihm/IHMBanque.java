@@ -12,7 +12,7 @@ import java.util.Set;
 
 import javax.swing.*;
 
-public class ListeCpt extends JFrame implements ActionListener {
+public class IHMBanque extends JFrame implements ActionListener {
 	private static Banque maBanque;
 	private JList listCli;
 	private JButton btnOK;
@@ -20,11 +20,11 @@ public class ListeCpt extends JFrame implements ActionListener {
 	private JCheckBox chbDecouvert;
 	private DefaultListModel listModel;
 
-	public ListeCpt(Banque uneBanque) {
+	public IHMBanque(Banque uneBanque) {
 		setTitle("Comptes client de la banque " + uneBanque.getNom());
 		setLocation(50, 50);
 		setSize(400, 400);
-		setDefaultCloseOperation(ListeCpt.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(IHMBanque.EXIT_ON_CLOSE);
 
 		listModel = new DefaultListModel();
 		listCli = new JList();
@@ -89,6 +89,6 @@ public class ListeCpt extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 
 		maBanque = new Banque("BNP");
-		new ListeCpt(maBanque);
+		new IHMBanque(maBanque);
 	}
 }

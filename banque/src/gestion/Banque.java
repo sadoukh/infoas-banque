@@ -17,10 +17,10 @@ public class Banque {
 
 	@Override
 	public String toString() {
-		String s = "Liste des comptes de la banque " + nom + "\n";
+		String s = "Liste des comptes de la banque " + nom + " : ";
 
 		for (Integer i : listeComptes.keySet())
-			s += "\nCompte numero " + i + listeComptes.get(i) + "\n";
+			s += "Compte numero " + i + listeComptes.get(i) + " ";
 
 		return s;
 	}

@@ -23,8 +23,8 @@ public abstract class Compte implements Nommable {
 
 	@Override
 	public String toString() {
-		return "\nProprietaire : " + proprio + "\nSolde actuel : " + solde
-				+ "€\nDecouvert maximum autorise : " + decouvertMax + "€";
+		return "Proprietaire : " + proprio + " Solde actuel : " + solde
+				+ "€ Decouvert maximum autorise : " + decouvertMax + "€";
 	}
 
 	public boolean soldeEstNul() {
