@@ -9,6 +9,11 @@ public class PersonnePhysique extends Compte implements Nommable {
 		super(proprio, solde, decouvertMax);
 	}
 
+	@Override
+	public String getTypeCpt() {
+		return "Personne physique";
+	}
+
 	public boolean debiter(float somme) {
 		boolean ok = super.debiter(somme);
 
@@ -20,10 +25,5 @@ public class PersonnePhysique extends Compte implements Nommable {
 		}
 
 		return ok;
-	}
-
-	@Override
-	public String getTypeCpt() {
-		return "Personne physique";
 	}
 }

@@ -26,15 +26,15 @@ public abstract class Compte implements Nommable {
 		return "Proprietaire : " + proprio + " Solde actuel : " + solde
 				+ "€ Decouvert maximum autorise : " + decouvertMax + "€";
 	}
-
-	public boolean soldeEstNul() {
-		return this.solde == 0;
+	
+	public String getProprio() {
+		return proprio;
 	}
 
-	public boolean soldeEstNegatif() {
-		return this.solde < 0;
+	public ArrayList<Operation> getJournal() {
+		return monJournal.getListe();
 	}
-
+	
 	public float getSolde() {
 		return solde;
 	}
@@ -45,6 +45,38 @@ public abstract class Compte implements Nommable {
 
 	public float getFactureVirtuelle() {
 		return factureVirtuelle;
+	}
+	
+	public void setProprio(String proprio) {
+		// Pour éviter d'exécuter la méthode et de remplir le journal si rien ne
+		// s'est passé
+		if (!this.proprio.equals(proprio)) {
+			this.proprio = proprio;
+			monJournal
+					.ajouterOp("Le compte a changé de propriétaire. Le nouveau propriétaire est "
+							+ proprio);
+		}
+	}
+	
+	public void setDecouvertMax(float decouvertMax) {
+		assert decouvertMax > 0;
+
+		if (this.decouvertMax != decouvertMax) {
+			if (decouvertMax > 0) {
+				this.decouvertMax = decouvertMax;
+				monJournal
+						.ajouterOp("Le découvert maximum a été changé. Le nouveau découvert maximum est de "
+								+ decouvertMax + "€");
+			}
+		}
+	}
+
+	public boolean soldeEstNul() {
+		return this.solde == 0;
+	}
+
+	public boolean soldeEstNegatif() {
+		return this.solde < 0;
 	}
 
 	public boolean crediter(float somme) {
@@ -62,45 +94,20 @@ public abstract class Compte implements Nommable {
 	public boolean debiter(float somme) {
 		assert somme > 0;
 
-		boolean ok = solde - somme >= -decouvertMax;
+		boolean supSommeMax = false, valide = somme > 0;
 
-		if (ok) {
-			solde -= somme;
-			monJournal.ajouterOp("Le compte a été débité de " + somme + "€");
-		} else {
-			monJournal
-					.ajouterOp("Débit refusé. La somme demandée dépasse le découvert maximum authorisé.");
-		}
-
-		return ok;
-	}
-
-	public String getProprio() {
-		return proprio;
-	}
-
-	public void setProprio(String proprio) {
-		// Pour éviter d'exécuter la méthode et de remplir le journal si rien ne
-		// s'est passé
-		if (!this.proprio.equals(proprio)) {
-			this.proprio = proprio;
-			monJournal
-					.ajouterOp("Le compte a changé de propriétaire. Le nouveau propriétaire est "
-							+ proprio);
-		}
-	}
-
-	public void setDecouvertMax(float decouvertMax) {
-		assert decouvertMax > 0;
-
-		if (this.decouvertMax != decouvertMax) {
-			if (decouvertMax > 0) {
-				this.decouvertMax = decouvertMax;
+		if (valide) {
+			if (supSommeMax = solde - somme >= -decouvertMax) {
+				solde -= somme;
 				monJournal
-						.ajouterOp("Le découvert maximum a été changé. Le nouveau découvert maximum est de "
-								+ decouvertMax + "€");
+						.ajouterOp("Le compte a été débité de " + somme + "€");
+			} else {
+				monJournal
+						.ajouterOp("Débit refusé. La somme demandée dépasse le découvert maximum authorisé.");
 			}
 		}
+
+		return supSommeMax;
 	}
 
 	public boolean facturer() {
@@ -115,9 +122,5 @@ public abstract class Compte implements Nommable {
 		}
 
 		return ok;
-	}
-
-	public ArrayList<Operation> getJournal() {
-		return monJournal.getListe();
 	}
 }
