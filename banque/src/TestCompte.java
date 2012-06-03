@@ -6,7 +6,7 @@ public class TestCompte {
 	public static void main(String[] arg) {
 		float decouvertMax = 100;
 
-		PersonneMorale pm = new PersonneMorale("toto", decouvertMax);
+		PersonneMorale pm = new PersonneMorale("Roger", decouvertMax);
 		System.out.println("-> etat initial du cpt pers morale\n" + pm + "\n");
 
 		System.out.println(pm.crediter(1000));
@@ -23,7 +23,7 @@ public class TestCompte {
 
 		System.out.println(pm.getJournal());
 
-		PersonnePhysique pp = new PersonnePhysique("robert", 10000,
+		PersonnePhysique pp = new PersonnePhysique("Robert", 10000,
 				decouvertMax * 20);
 		System.out
 				.println("-> etat initial du cpt pers physique\n" + pp + "\n");
