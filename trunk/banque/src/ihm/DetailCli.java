@@ -154,7 +154,6 @@ public class DetailCli extends Formulaire implements ActionListener {
 				else
 					cptActuel.debiter(somme);
 
-				majSolde();
 			} else
 				JOptionPane.showMessageDialog(this,
 						"Vous devez saisir une somme correcte.",
@@ -164,6 +163,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 		if (objSource == btnFacturerDecou) {
 			cptActuel.facturer();
 		}
+		lblFact.setText(cptActuel.getFactureVirtuelle() + "€");
+		majSolde();
 		majListe();
 	}
 }

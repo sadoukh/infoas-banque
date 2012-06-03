@@ -110,6 +110,7 @@ public abstract class Compte implements Nommable {
 
 		if (ok) {
 			solde -= factureVirtuelle;
+			factureVirtuelle = 0;
 			monJournal.ajouterOp("Le compte a été facturé pour un decouvert.");
 		}
 
