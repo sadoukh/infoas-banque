@@ -23,7 +23,8 @@ import javax.swing.event.ChangeListener;
 
 import utilitaire.VerifFormat;
 
-public class AjouterCompte extends JFrame implements ActionListener, ChangeListener {
+public class AjouterCompte extends JFrame implements ActionListener,
+		ChangeListener {
 	private Banque laBanque;
 	private JRadioButton radPhysique;
 	private JRadioButton radMoral;
@@ -34,7 +35,6 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 	private ChampModif chSolde;
 	private ChampModif chDecouvertMax;
 	private JButton btnAjouter;
-	private ButtonGroup cbg;
 	private ListeCpt parent;
 
 	public AjouterCompte(ListeCpt parent, Banque laBanque) {
@@ -52,14 +52,14 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 		radAdo.addChangeListener(this);
 		radAsso = new JRadioButton("Associatif", false);
 		radAsso.addChangeListener(this);
-		
+
 		panChoixCpt = new JPanel(new GridLayout(1, 4));
 		panChoixCpt.add(radPhysique);
 		panChoixCpt.add(radMoral);
 		panChoixCpt.add(radAdo);
 		panChoixCpt.add(radAsso);
 
-		cbg = new ButtonGroup();
+		ButtonGroup cbg = new ButtonGroup();
 		cbg.add(radPhysique);
 		cbg.add(radMoral);
 		cbg.add(radAdo);
@@ -88,39 +88,53 @@ public class AjouterCompte extends JFrame implements ActionListener, ChangeListe
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
+		boolean soldeOk = VerifFormat.estChiffre(chSolde.getTf());
 		Compte cptTemp = null;
+		String sErreur = null;
 
-		if (VerifFormat.estChiffre(chSolde.getTf())) {
-			if (radPhysique.isSelected()) {
-				cptTemp = new PersonnePhysique(chProprio.getTf(),
-						Float.parseFloat(chSolde.getTf()),
-						Float.parseFloat(chDecouvertMax.getTf()));
-			} else if (radMoral.isSelected()) {
-				cptTemp = new PersonneMorale(chProprio.getTf(),
-						Float.parseFloat(chSolde.getTf()),
-						Float.parseFloat(chDecouvertMax.getTf()));
-			} else if (radAdo.isSelected()) {
-				cptTemp = new Ado(chProprio.getTf(), Float.parseFloat(chSolde
-						.getTf()));
-			} else if (radAsso.isSelected()) {
-				cptTemp = new Association(chProprio.getTf(),
-						Float.parseFloat(chSolde.getTf()));
+		if (radPhysique.isSelected() || radMoral.isSelected()) {
+			if (soldeOk && VerifFormat.estChiffre(chDecouvertMax.getTf())) {
+				if (radPhysique.isSelected()) {
+					cptTemp = new PersonnePhysique(chProprio.getTf(),
+							Float.parseFloat(chSolde.getTf()),
+							Float.parseFloat(chDecouvertMax.getTf()));
+				} else {
+					cptTemp = new PersonneMorale(chProprio.getTf(),
+							Float.parseFloat(chSolde.getTf()),
+							Float.parseFloat(chDecouvertMax.getTf()));
+				}
+			} else {
+				sErreur = "Vous devez saisir un solde et un découvert max correct.";
 			}
+		} else {
+			if (soldeOk) {
+				if (radAdo.isSelected()) {
+					cptTemp = new Ado(chProprio.getTf(),
+							Float.parseFloat(chSolde.getTf()));
+				} else {
+					cptTemp = new Association(chProprio.getTf(),
+							Float.parseFloat(chSolde.getTf()));
+				}
+			} else {
+				sErreur = "Vous devez saisir un solde correct.";
+			}
+		}
+
+		if (sErreur == null) {
 			laBanque.ajouterCompte(cptTemp);
 			JOptionPane.showMessageDialog(this, "Le compte a bien été ajouté",
 					"Nouveau compte", JOptionPane.PLAIN_MESSAGE);
 			parent.majListe(parent.getChbDecouvert().isSelected());
 			dispose();
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(this, "Vous devez saisir un solde correct.",
-					"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(this, sErreur, "Erreur de saisie",
+					JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
-		chDecouvertMax.setVisible(!(radAdo.isSelected() || radAsso.isSelected()));
+		chDecouvertMax
+				.setVisible(!(radAdo.isSelected() || radAsso.isSelected()));
 	}
 }
