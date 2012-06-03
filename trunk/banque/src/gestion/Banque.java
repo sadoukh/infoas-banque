@@ -43,16 +43,6 @@ public class Banque {
 		listeComptes.put(nbCpt, cpt);
 	}
 
-	public void detruireCompte(Compte cpt) {
-		Set<Integer> ks = listeComptes.keySet();
-		
-		//parcours complet de la liste pas nécessaire -> voir alternative
-		for(int k : ks) {
-			if(cpt == listeComptes.get(k))
-				listeComptes.remove(k);
-		}
-	}
-	
 	public String getNom() {
 		return nom;
 	}

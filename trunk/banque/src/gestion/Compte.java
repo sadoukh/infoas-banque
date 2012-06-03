@@ -66,7 +66,7 @@ public abstract class Compte implements Nommable {
 
 		if (ok) {
 			solde -= somme;
-			monJournal.ajouterOp("Le compte a ete debite de " + somme + "€");
+			monJournal.ajouterOp("Le compte a été débité de " + somme + "€");
 		} else {
 			monJournal
 					.ajouterOp("Débit refusé. La somme demandée dépasse le découvert maximum authorisé.");

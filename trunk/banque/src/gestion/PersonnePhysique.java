@@ -1,4 +1,5 @@
 package gestion;
+
 public class PersonnePhysique extends Compte implements Nommable {
 	public PersonnePhysique(String proprio, float decouvertMax) {
 		super(proprio, decouvertMax);
@@ -13,9 +14,8 @@ public class PersonnePhysique extends Compte implements Nommable {
 
 		if (ok && solde < 0) {
 			super.factureVirtuelle += 10;
-			super.monJournal
-					.ajouterOp(super.factureVirtuelle
-							+ "€ ajoutés à la future facture pour cause de découvert.");
+			super.monJournal.ajouterOp(super.factureVirtuelle
+					+ "€ ajoutés à la future facture pour cause de découvert.");
 		}
 
 		return ok;

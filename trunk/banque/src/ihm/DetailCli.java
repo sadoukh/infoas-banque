@@ -29,9 +29,16 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private JButton btnFacturerDecou;
 	private ChampConsult chSolde;
 	private boolean decouvertAutorise;
+	private JButton btnSupprimer;
+	private Banque laBanque;
+	private int numCpt;
+	private ListeCpt parent;
 
-	public DetailCli(Banque laBanque, int numCpt) {
+	public DetailCli(ListeCpt parent, Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
+		this.laBanque = laBanque;
+		this.numCpt = numCpt;
+		this.parent = parent;
 
 		setSize(700, 500);
 		setTitle("Détail du compte n°" + numCpt);
@@ -51,7 +58,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 
 		// Certains comptes ne doivent pas avoir la possibilité de changer leur
 		// découvert max
-		if (decouvertAutorise = (cptActuel.getTypeCpt() != "Adolescent" && cptActuel.getTypeCpt() != "Associatif")) {
+		if (decouvertAutorise = (cptActuel.getTypeCpt() != "Adolescent" && cptActuel
+				.getTypeCpt() != "Associatif")) {
 			chDecMax = new ChampBouton(this, "Découvert maximum (en €)",
 					cptActuel.getDecouvertMax());
 			panGestion.add(chDecMax);
@@ -88,6 +96,10 @@ public class DetailCli extends Formulaire implements ActionListener {
 		listeOp.setModel(listModel);
 		majListe();
 
+		btnSupprimer = new JButton("Supprimer le compte");
+		btnSupprimer.addActionListener(this);
+		panGestion.add(btnSupprimer);
+
 		add(scrollPane, BorderLayout.SOUTH);
 
 		setVisible(true);
@@ -99,14 +111,14 @@ public class DetailCli extends Formulaire implements ActionListener {
 		for (Operation op : alOp)
 			listModel.addElement(op);
 	}
-	
+
 	private void majSolde() {
 		chSolde.setLblTexte(cptActuel.getSolde() + "€");
 	}
 
 	public void maj() {
 		cptActuel.setProprio(chNomCli.getTf());
-		if(decouvertAutorise)
+		if (decouvertAutorise)
 			cptActuel.setDecouvertMax(Float.parseFloat(chDecMax.getTf()));
 		majListe();
 	}
@@ -115,24 +127,40 @@ public class DetailCli extends Formulaire implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		Object objSource = ae.getSource();
 
+		if (objSource == btnSupprimer) {
+			if (JOptionPane.showConfirmDialog(this,
+					"Voulez-vous supprimer ce compte ?",
+					"Confirmation de suppression", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (laBanque.supprimerCompte(numCpt)) {
+					parent.majListe(parent.getChbDecouvert().isSelected());
+					dispose();
+				} else {
+					JOptionPane
+							.showMessageDialog(
+									this,
+									"Vous ne pouvez supprimer un compte que si son solde est nul",
+									"Erreur", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+
 		if (objSource == btnCrediter || objSource == btnDebiter) {
 			if (VerifFormat.estChiffre(tfSomme.getText())) {
 				float somme = Float.parseFloat(tfSomme.getText());
-				
-				if(objSource == btnCrediter)
+
+				if (objSource == btnCrediter)
 					cptActuel.crediter(somme);
 				else
 					cptActuel.debiter(somme);
-				
+
 				majSolde();
-			}
-			else
+			} else
 				JOptionPane.showMessageDialog(this,
 						"Vous devez saisir une somme correcte.",
 						"Erreur de saisie", JOptionPane.ERROR_MESSAGE);
 		}
-		
-		if(objSource == btnFacturerDecou) {
+
+		if (objSource == btnFacturerDecou) {
 			cptActuel.facturer();
 		}
 		majListe();
