@@ -14,7 +14,7 @@ import javax.swing.*;
 
 import utilitaire.VerifFormat;
 
-public class DetailCli extends Formulaire implements ActionListener {
+public class DetailCompte extends Formulaire implements ActionListener {
 	private Compte cptActuel;
 	private ChampConsult chNumCpt;
 	private ChampConsult chTypeCpt;
@@ -34,7 +34,7 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private int numCpt;
 	private IHMBanque parent;
 
-	public DetailCli(IHMBanque parent, Banque laBanque, int numCpt) {
+	public DetailCompte(IHMBanque parent, Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
 		this.laBanque = laBanque;
 		this.numCpt = numCpt;
@@ -59,22 +59,21 @@ public class DetailCli extends Formulaire implements ActionListener {
 		// Certains comptes ne doivent pas avoir la possibilité de changer leur
 		// découvert max
 		if (decouvertAutorise = (cptActuel.getTypeCpt() != "Adolescent" && cptActuel
-				.getTypeCpt() != "Associatif")) {
+				.getTypeCpt() != "Association")) {
 			chDecMax = new ChampBouton(this, "Découvert maximum (en €)",
 					cptActuel.getDecouvertMax());
 			panGestion.add(chDecMax);
+
+			JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 10, 0));
+			panFactDecou.add(new JLabel("À facturer"));
+			lblFact = new JLabel(cptActuel.getFactureVirtuelle() + "€");
+			panFactDecou.add(lblFact);
+			btnFacturerDecou = new JButton("Facturer");
+			btnFacturerDecou.addActionListener(this);
+			panFactDecou.add(btnFacturerDecou);
+
+			panGestion.add(panFactDecou);
 		}
-
-		JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 10, 0));
-		panFactDecou.add(new JLabel("À facturer"));
-		lblFact = new JLabel(cptActuel.getFactureVirtuelle() + "€");
-		panFactDecou.add(lblFact);
-		btnFacturerDecou = new JButton("Facturer");
-		btnFacturerDecou.addActionListener(this);
-		panFactDecou.add(btnFacturerDecou);
-
-		panGestion.add(panFactDecou);
-
 		JPanel panCredDeb = new JPanel(new GridLayout(1, 4, 10, 0));
 		panCredDeb.add(new JLabel("Somme (en €)"));
 		tfSomme = new JTextField();
@@ -108,8 +107,8 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private void majListe() {
 		listModel.removeAllElements();
 		ArrayList<Operation> alOp = cptActuel.getJournal();
-		
-		for(int cpt = alOp.size() - 1;cpt >= 0;cpt--)
+
+		for (int cpt = alOp.size() - 1; cpt >= 0; cpt--)
 			listModel.addElement(alOp.get(cpt));
 	}
 
@@ -163,7 +162,9 @@ public class DetailCli extends Formulaire implements ActionListener {
 		if (objSource == btnFacturerDecou) {
 			cptActuel.facturer();
 		}
-		lblFact.setText(cptActuel.getFactureVirtuelle() + "€");
+		if(decouvertAutorise)
+			lblFact.setText(cptActuel.getFactureVirtuelle() + "€");
+		
 		majSolde();
 		majListe();
 	}
