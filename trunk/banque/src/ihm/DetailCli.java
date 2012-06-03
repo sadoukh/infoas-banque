@@ -79,12 +79,12 @@ public class DetailCli extends Formulaire implements ActionListener {
 		panCredDeb.add(new JLabel("Somme (en €)"));
 		tfSomme = new JTextField();
 		panCredDeb.add(tfSomme);
-		btnDebiter = new JButton("Débiter");
-		btnDebiter.addActionListener(this);
-		panCredDeb.add(btnDebiter);
 		btnCrediter = new JButton("Créditer");
 		btnCrediter.addActionListener(this);
 		panCredDeb.add(btnCrediter);
+		btnDebiter = new JButton("Débiter");
+		btnDebiter.addActionListener(this);
+		panCredDeb.add(btnDebiter);
 
 		panGestion.add(panCredDeb);
 
@@ -108,8 +108,9 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private void majListe() {
 		listModel.removeAllElements();
 		ArrayList<Operation> alOp = cptActuel.getJournal();
-		for (Operation op : alOp)
-			listModel.addElement(op);
+		
+		for(int cpt = alOp.size() - 1;cpt >= 0;cpt--)
+			listModel.addElement(alOp.get(cpt));
 	}
 
 	private void majSolde() {

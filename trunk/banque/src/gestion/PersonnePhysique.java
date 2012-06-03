@@ -13,8 +13,9 @@ public class PersonnePhysique extends Compte implements Nommable {
 		boolean ok = super.debiter(somme);
 
 		if (ok && solde < 0) {
-			super.factureVirtuelle += 10;
-			super.monJournal.ajouterOp(super.factureVirtuelle
+			float fact = 10;
+			super.factureVirtuelle += fact;
+			super.monJournal.ajouterOp(fact
 					+ "€ ajoutés à la future facture pour cause de découvert.");
 		}
 
