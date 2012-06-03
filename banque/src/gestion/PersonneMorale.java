@@ -9,9 +9,14 @@ public class PersonneMorale extends Compte implements Nommable {
 		super(proprio, solde, decouvertMax);
 	}
 
+	@Override
+	public String getTypeCpt() {
+		return "Personne morale";
+	}
+
 	public boolean debiter(float somme) {
 		boolean ok = super.debiter(somme);
-		
+
 		if (ok && solde < 0) {
 			float fact = (float) (0.1 * -solde);
 			super.factureVirtuelle += fact;
@@ -20,10 +25,5 @@ public class PersonneMorale extends Compte implements Nommable {
 		}
 
 		return ok;
-	}
-
-	@Override
-	public String getTypeCpt() {
-		return "Personne morale";
 	}
 }

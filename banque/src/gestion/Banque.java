@@ -25,6 +25,18 @@ public class Banque {
 		return s;
 	}
 
+	public String getNom() {
+		return nom;
+	}
+
+	public Compte getCompte(int numCpt) {
+		return listeComptes.get(numCpt);
+	}
+
+	public HashMap<Integer, Compte> getListeCompte() {
+		return listeComptes;
+	}
+
 	public HashMap<Integer, Compte> listeDecouverts() {
 		Set<Integer> ks = listeComptes.keySet();
 		HashMap<Integer, Compte> hmTemp = new HashMap<Integer, Compte>();
@@ -43,14 +55,6 @@ public class Banque {
 		listeComptes.put(nbCpt, cpt);
 	}
 
-	public String getNom() {
-		return nom;
-	}
-
-	public HashMap<Integer, Compte> getListeCompte() {
-		return listeComptes;
-	}
-
 	public boolean supprimerCompte(int numCpt) {
 		boolean ok = listeComptes.get(numCpt).soldeEstNul();
 
@@ -58,9 +62,5 @@ public class Banque {
 			listeComptes.remove(numCpt);
 
 		return ok;
-	}
-
-	public Compte getCompte(int numCpt) {
-		return listeComptes.get(numCpt);
 	}
 }

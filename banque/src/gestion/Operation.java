@@ -1,4 +1,5 @@
 package gestion;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ public class Operation {
 		this.sdf = new SimpleDateFormat("dd/MM/yyyy à HH:mm:ss");
 	}
 
+	@Override
 	public String toString() {
 		return "Le " + sdf.format(this.dateOp) + " : " + this.libOp;
 	}
