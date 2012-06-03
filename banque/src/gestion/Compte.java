@@ -97,25 +97,11 @@ public abstract class Compte implements Nommable {
 			if (decouvertMax > 0) {
 				this.decouvertMax = decouvertMax;
 				monJournal
-						.ajouterOp("Le découvert maximum a été changé. Le nouveau découvert maximum est "
-								+ decouvertMax);
+						.ajouterOp("Le découvert maximum a été changé. Le nouveau découvert maximum est de "
+								+ decouvertMax + "€");
 			}
 		}
 	}
-
-	// public boolean facturer() {
-	// assert factureVirtuelle <= 0;
-	//
-	// boolean ok = factureVirtuelle > 0;
-	//
-	// if (ok) {
-	// solde -= factureVirtuelle;
-	// monJournal
-	// .ajouterOp("Le compte a été facturé pour un decouvert.");
-	// }
-	//
-	// return ok;
-	// }
 
 	public boolean facturer() {
 		assert factureVirtuelle > 0;

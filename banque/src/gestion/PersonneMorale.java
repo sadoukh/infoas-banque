@@ -12,8 +12,9 @@ public class PersonneMorale extends Compte implements Nommable {
 	public boolean debiter(float somme) {
 		boolean ok = super.debiter(somme);
 		if (ok) {
-			factureVirtuelle += (float) 0.1 * solde;
-			super.monJournal.ajouterOp(super.factureVirtuelle
+			float fact = (float) (0.1 * -solde);
+			super.factureVirtuelle += fact;
+			super.monJournal.ajouterOp(fact
 					+ "€ ajoutés à la future facture pour cause de découvert.");
 		}
 
