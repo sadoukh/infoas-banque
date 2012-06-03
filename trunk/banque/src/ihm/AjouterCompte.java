@@ -35,9 +35,9 @@ public class AjouterCompte extends JFrame implements ActionListener,
 	private ChampModif chSolde;
 	private ChampModif chDecouvertMax;
 	private JButton btnAjouter;
-	private ListeCpt parent;
+	private IHMBanque parent;
 
-	public AjouterCompte(ListeCpt parent, Banque laBanque) {
+	public AjouterCompte(IHMBanque parent, Banque laBanque) {
 		setSize(700, 400);
 		setTitle("Ajouter un compte");
 

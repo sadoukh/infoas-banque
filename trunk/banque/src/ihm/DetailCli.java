@@ -32,9 +32,9 @@ public class DetailCli extends Formulaire implements ActionListener {
 	private JButton btnSupprimer;
 	private Banque laBanque;
 	private int numCpt;
-	private ListeCpt parent;
+	private IHMBanque parent;
 
-	public DetailCli(ListeCpt parent, Banque laBanque, int numCpt) {
+	public DetailCli(IHMBanque parent, Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
 		this.laBanque = laBanque;
 		this.numCpt = numCpt;
