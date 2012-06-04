@@ -13,82 +13,89 @@ import java.util.Set;
 import javax.swing.*;
 
 public class IHMBanque extends JFrame implements ActionListener {
-	private static Banque maBanque;
-	private JList listCli;
-	private JButton btnOK;
-	private JButton btnAjouter;
-	private JCheckBox chbDecouvert;
-	private DefaultListModel listModel;
+        private static Banque maBanque;
+        private JList listCli;
+        private JButton btnOK;
+        private JButton btnAjouter;
+        private JCheckBox chbDecouvert;
+        private DefaultListModel listModel;
 
-	public IHMBanque(Banque uneBanque) {
-		setTitle("Comptes client de la banque " + uneBanque.getNom());
-		setLocation(50, 50);
-		setSize(400, 400);
-		setDefaultCloseOperation(IHMBanque.EXIT_ON_CLOSE);
+        public IHMBanque(Banque uneBanque) {
+                setTitle("Comptes client de la banque " + uneBanque.getNom());
+                setLocation(50, 50);
+                setSize(400, 400);
+                setDefaultCloseOperation(IHMBanque.EXIT_ON_CLOSE);
 
-		listModel = new DefaultListModel();
-		listCli = new JList();
-		listCli.setModel(listModel);
-		JScrollPane scrollPane = new JScrollPane(listCli);
+                listModel = new DefaultListModel();
+                listCli = new JList();
+                listCli.setModel(listModel);
+                JScrollPane scrollPane = new JScrollPane(listCli);
 
-		majListe(false);
+                majListe(false);
 
-		btnAjouter = new JButton("Ajouter un compte");
-		btnAjouter.addActionListener(this);
-		add(btnAjouter, BorderLayout.NORTH);
-		add(scrollPane);
+                JPanel pGrid = new JPanel(new BorderLayout());
 
-		JPanel pGrid = new JPanel(new GridLayout(2, 1));
-		chbDecouvert = new JCheckBox(
-				"Afficher uniquement les comptes à découvert");
-		chbDecouvert.addActionListener(this);
-		btnOK = new JButton("OK");
-		btnOK.addActionListener(this);
-		pGrid.add(chbDecouvert);
-		pGrid.add(btnOK);
-		add(pGrid, BorderLayout.SOUTH);
+        		pGrid.add(scrollPane);
+        		chbDecouvert = new JCheckBox(
+        				"Afficher uniquement les comptes à découvert");
+        		chbDecouvert.addActionListener(this);
+        		pGrid.add(chbDecouvert, BorderLayout.SOUTH);
 
-		setVisible(true);
-	}
+        		add(pGrid);
 
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-		Object objSource = ae.getSource();
-		if (objSource == btnOK) {
-			if (listCli.getSelectedIndex() != -1)
-				new DetailCompte(this, maBanque, Integer.parseInt(listCli
-						.getSelectedValue().toString().split(" - ")[0]));
-			else
-				JOptionPane.showMessageDialog(this,
-						"Vous devez sélectionner un compte dans la liste.",
-						"Erreur", JOptionPane.ERROR_MESSAGE);
-		} else if (objSource == chbDecouvert) {
-			listModel.removeAllElements();
-			majListe(chbDecouvert.isSelected());
-			listCli.setModel(listModel);
-		} else if (objSource == btnAjouter) {
-			new AjouterCompte(this, maBanque);
-		}
-	}
+        		JPanel pGrid2 = new JPanel(new GridLayout(1, 2, 10, 0));
+        		btnAjouter = new JButton("Ajouter");
+        		btnAjouter.addActionListener(this);
+        		pGrid2.add(btnAjouter);
+        		btnOK = new JButton("Modifier");
+        		btnOK.addActionListener(this);
+        		pGrid2.add(btnOK);
+        		
+        		add(pGrid2, BorderLayout.SOUTH);
+        		
 
-	public void majListe(boolean aDecouvert) {
-		listModel.removeAllElements();
-		HashMap<Integer, Compte> listeCpt = aDecouvert ? maBanque
-				.listeDecouverts() : maBanque.getListeCompte();
-		Set<Integer> ks = listeCpt.keySet();
-		for (int k : ks) {
-			Compte cptCourant = listeCpt.get(k);
-			listModel.addElement(k + " - " + cptCourant.getProprio());
-		}
-	}
+        		setVisible(true);
+        }
 
-	public JCheckBox getChbDecouvert() {
-		return chbDecouvert;
-	}
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+                Object objSource = ae.getSource();
+                if (objSource == btnOK) {
+                        if (listCli.getSelectedIndex() != -1)
+                                new DetailCompte(this, maBanque, Integer.parseInt(listCli
+                                                .getSelectedValue().toString().split(" - ")[0]));
+                        else
+                                JOptionPane.showMessageDialog(this,
+                                                "Vous devez sélectionner un compte dans la liste.",
+                                                "Erreur", JOptionPane.ERROR_MESSAGE);
+                } else if (objSource == chbDecouvert) {
+                        listModel.removeAllElements();
+                        majListe(chbDecouvert.isSelected());
+                        listCli.setModel(listModel);
+                } else if (objSource == btnAjouter) {
+                        new AjouterCompte(this, maBanque);
+                }
+        }
 
-	public static void main(String[] args) {
+        public void majListe(boolean aDecouvert) {
+                listModel.removeAllElements();
+                HashMap<Integer, Compte> listeCpt = aDecouvert ? maBanque
+                                .listeDecouverts() : maBanque.getListeCompte();
+                Set<Integer> ks = listeCpt.keySet();
+                for (int k : ks) {
+                        Compte cptCourant = listeCpt.get(k);
+                        listModel.addElement(k + " - " + cptCourant.getProprio());
+                }
+        }
 
-		maBanque = new Banque("BNP");
-		new IHMBanque(maBanque);
-	}
+        public JCheckBox getChbDecouvert() {
+                return chbDecouvert;
+        }
+
+        public static void main(String[] args) {
+
+                maBanque = new Banque("BNP");
+                new IHMBanque(maBanque);
+        }
 }
+
