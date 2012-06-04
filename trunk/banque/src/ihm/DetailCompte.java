@@ -14,13 +14,14 @@ import javax.swing.*;
 
 import utilitaire.VerifFormat;
 
-public class DetailCompte extends Formulaire implements ActionListener {
+public class DetailCompte extends JFrame implements ActionListener {
+	private IHMBanque parent;
+	private Banque laBanque;
 	private Compte cptActuel;
 	private ChampConsult chNumCpt;
 	private ChampConsult chTypeCpt;
 	private ChampBouton chNomCli;
 	private ChampBouton chDecMax;
-	private JList listeOp;
 	private DefaultListModel listModel;
 	private JTextField tfSomme;
 	private JButton btnCrediter;
@@ -28,11 +29,9 @@ public class DetailCompte extends Formulaire implements ActionListener {
 	private JLabel lblFact;
 	private JButton btnFacturerDecou;
 	private ChampConsult chSolde;
-	private boolean decouvertAutorise;
 	private JButton btnSupprimer;
-	private Banque laBanque;
 	private int numCpt;
-	private IHMBanque parent;
+	private boolean decouvertAutorise;
 
 	public DetailCompte(IHMBanque parent, Banque laBanque, int numCpt) {
 		cptActuel = laBanque.getCompte(numCpt);
@@ -64,7 +63,7 @@ public class DetailCompte extends Formulaire implements ActionListener {
 					cptActuel.getDecouvertMax());
 			panGestion.add(chDecMax);
 
-			JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 10, 0));
+			JPanel panFactDecou = new JPanel(new GridLayout(1, 3, 8, 0));
 			panFactDecou.add(new JLabel("À facturer"));
 			lblFact = new JLabel(cptActuel.getFactureVirtuelle() + "€");
 			panFactDecou.add(lblFact);
@@ -73,14 +72,22 @@ public class DetailCompte extends Formulaire implements ActionListener {
 			panFactDecou.add(btnFacturerDecou);
 
 			panGestion.add(panFactDecou);
+		} else {
+			chDecMax = null;
+			lblFact = null;
+			btnFacturerDecou = null;
 		}
+
 		JPanel panCredDeb = new JPanel(new GridLayout(1, 4, 10, 0));
 		panCredDeb.add(new JLabel("Somme (en €)"));
+
 		tfSomme = new JTextField();
 		panCredDeb.add(tfSomme);
+
 		btnCrediter = new JButton("Créditer");
 		btnCrediter.addActionListener(this);
 		panCredDeb.add(btnCrediter);
+
 		btnDebiter = new JButton("Débiter");
 		btnDebiter.addActionListener(this);
 		panCredDeb.add(btnDebiter);
@@ -90,7 +97,7 @@ public class DetailCompte extends Formulaire implements ActionListener {
 		add(panGestion);
 
 		listModel = new DefaultListModel();
-		listeOp = new JList();
+		JList listeOp = new JList();
 		JScrollPane scrollPane = new JScrollPane(listeOp);
 		listeOp.setModel(listModel);
 		majListe();
@@ -162,9 +169,11 @@ public class DetailCompte extends Formulaire implements ActionListener {
 		if (objSource == btnFacturerDecou) {
 			cptActuel.facturer();
 		}
-		if(decouvertAutorise)
+
+		if (decouvertAutorise) {
 			lblFact.setText(cptActuel.getFactureVirtuelle() + "€");
-		
+		}
+
 		majSolde();
 		majListe();
 	}

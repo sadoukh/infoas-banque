@@ -25,24 +25,22 @@ import utilitaire.VerifFormat;
 
 public class AjouterCompte extends JFrame implements ActionListener,
 		ChangeListener {
+	private IHMBanque parent;
 	private Banque laBanque;
 	private JRadioButton radPhysique;
 	private JRadioButton radMoral;
 	private JRadioButton radAdo;
 	private JRadioButton radAsso;
-	private JPanel panChoixCpt;
 	private ChampModif chProprio;
 	private ChampModif chSolde;
 	private ChampModif chDecouvertMax;
-	private JButton btnAjouter;
-	private IHMBanque parent;
 
 	public AjouterCompte(IHMBanque parent, Banque laBanque) {
 		setSize(700, 400);
 		setTitle("Ajouter un compte");
 
-		this.laBanque = laBanque;
 		this.parent = parent;
+		this.laBanque = laBanque;
 
 		radPhysique = new JRadioButton("Personne physique", false);
 		radPhysique.addChangeListener(this);
@@ -53,7 +51,7 @@ public class AjouterCompte extends JFrame implements ActionListener,
 		radAsso = new JRadioButton("Associatif", false);
 		radAsso.addChangeListener(this);
 
-		panChoixCpt = new JPanel(new GridLayout(1, 4));
+		JPanel panChoixCpt = new JPanel(new GridLayout(1, 4));
 		panChoixCpt.add(radPhysique);
 		panChoixCpt.add(radMoral);
 		panChoixCpt.add(radAdo);
@@ -77,7 +75,7 @@ public class AjouterCompte extends JFrame implements ActionListener,
 
 		add(panInfos);
 
-		btnAjouter = new JButton("Créer le compte");
+		JButton btnAjouter = new JButton("Créer le compte");
 		btnAjouter.addActionListener(this);
 		add(btnAjouter, BorderLayout.SOUTH);
 
@@ -135,6 +133,6 @@ public class AjouterCompte extends JFrame implements ActionListener,
 	@Override
 	public void stateChanged(ChangeEvent arg0) {
 		chDecouvertMax
-				.setVisible(!(radAdo.isSelected() || radAsso.isSelected()));
+				.setVisible(radPhysique.isSelected() || radMoral.isSelected());
 	}
 }
