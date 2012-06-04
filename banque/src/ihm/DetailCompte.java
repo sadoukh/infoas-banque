@@ -19,16 +19,16 @@ public class DetailCompte extends JFrame implements ActionListener {
 	private Banque laBanque;
 	private Compte cptActuel;
 	private ChampConsult chNumCpt;
+	private ChampConsult chSolde;
 	private ChampConsult chTypeCpt;
 	private ChampBouton chNomCli;
 	private ChampBouton chDecMax;
 	private DefaultListModel listModel;
 	private JTextField tfSomme;
+	private JLabel lblFact;
 	private JButton btnCrediter;
 	private JButton btnDebiter;
-	private JLabel lblFact;
 	private JButton btnFacturerDecou;
-	private ChampConsult chSolde;
 	private JButton btnSupprimer;
 	private int numCpt;
 	private boolean decouvertAutorise;
