@@ -26,7 +26,7 @@ public abstract class Compte implements Nommable {
 		return "Proprietaire : " + proprio + " Solde actuel : " + solde
 				+ "€ Decouvert maximum autorise : " + decouvertMax + "€";
 	}
-	
+
 	public String getProprio() {
 		return proprio;
 	}
@@ -34,7 +34,7 @@ public abstract class Compte implements Nommable {
 	public ArrayList<Operation> getJournal() {
 		return monJournal.getListe();
 	}
-	
+
 	public float getSolde() {
 		return solde;
 	}
@@ -46,10 +46,9 @@ public abstract class Compte implements Nommable {
 	public float getFactureVirtuelle() {
 		return factureVirtuelle;
 	}
-	
+
 	public void setProprio(String proprio) {
-		// Pour éviter d'exécuter la méthode et de remplir le journal si rien ne
-		// s'est passé
+		// Pour éviter de remplir le journal si rien ne s'est passé
 		if (!this.proprio.equals(proprio)) {
 			this.proprio = proprio;
 			monJournal
@@ -57,7 +56,7 @@ public abstract class Compte implements Nommable {
 							+ proprio);
 		}
 	}
-	
+
 	public void setDecouvertMax(float decouvertMax) {
 		assert decouvertMax > 0;
 
