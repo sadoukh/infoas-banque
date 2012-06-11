@@ -43,16 +43,15 @@ public class IHMBanque extends JFrame implements ActionListener {
 
         		add(pGrid);
 
-        		JPanel pGrid2 = new JPanel(new GridLayout(1, 2, 10, 0));
+        		JPanel pGridBtn = new JPanel(new GridLayout(1, 2, 10, 0));
         		btnAjouter = new JButton("Ajouter");
         		btnAjouter.addActionListener(this);
-        		pGrid2.add(btnAjouter);
+        		pGridBtn.add(btnAjouter);
         		btnOK = new JButton("Modifier");
         		btnOK.addActionListener(this);
-        		pGrid2.add(btnOK);
+        		pGridBtn.add(btnOK);
         		
-        		add(pGrid2, BorderLayout.SOUTH);
-        		
+        		add(pGridBtn, BorderLayout.SOUTH);
 
         		setVisible(true);
         }
