@@ -1,0 +1,1 @@
+the goal is to create a system able to manage a bank
